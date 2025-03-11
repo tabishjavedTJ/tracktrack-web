@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
   },
   sidebar: {
-    width: "35%",
+    width: "30%",
     height: "100%",
     pointerEvents: "none",
     display: "flex",
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mainContent: {
-    width: "65%",
+    width: "70%",
     height: "100%",
     position: "relative",
     marginLeft: "10px",
@@ -59,6 +59,8 @@ const useStyles = makeStyles((theme) => ({
   middle: {
     flex: 1,
     display: "grid",
+    paddingRight:"5px",
+    paddingLeft:"5px"
   },
   contentMap: {
     pointerEvents: "auto",
