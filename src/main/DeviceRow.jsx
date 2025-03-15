@@ -27,6 +27,7 @@ import { useCatch, useCatchCallback } from "../../src/reactHelper";
 import RemoveDialog from "../common/components/RemoveDialog";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import HistoryIcon from '@mui/icons-material/History';
 
 dayjs.extend(relativeTime);
 
@@ -40,6 +41,7 @@ const DeviceRow = ({ data, index, style, disableActions }) => {
   const shareDisabled = useSelector(
     (state) => state.session.server.attributes.disableShare
   );
+  const selectedId = useSelector((state) => state.devices.selectedId);
   const user = useSelector((state) => state.session.user);
   const t = useTranslation();
   const deviceReadonly = useDeviceReadonly();
@@ -47,7 +49,7 @@ const DeviceRow = ({ data, index, style, disableActions }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [removing, setRemoving] = useState(false);
-  const [address, setAddress] = useState("Fetching address...");
+  const [address, setAddress] = useState("Loading...");
   const navigationAppLink = useAttributePreference("navigationAppLink");
   const navigationAppTitle = useAttributePreference("navigationAppTitle");
 
@@ -142,10 +144,19 @@ const DeviceRow = ({ data, index, style, disableActions }) => {
   }
   return (
     <ListItemButton
-      key={item.id}
-      onClick={() => dispatch(devicesActions.selectId(item.id))}
-      disabled={!admin && item.disabled}
-    >
+    key={item.id}
+    onClick={() => dispatch(devicesActions.selectId(item.id))}
+    disabled={!admin && item.disabled}
+    sx={{
+      border: selectedId === item.id ? "1px solid rgb(15, 36, 56)" : "none",
+      borderRadius: "8px",
+      marginY: "10px",
+      backgroundColor: selectedId === item.id ? "rgba(15, 36, 56, 0.05)" : "transparent", 
+      '&:hover': {
+        backgroundColor: "rgba(15, 36, 56, 0.1)"
+      }
+    }}
+  >
       <ListItemText
         primary={item[devicePrimary]}
         primaryTypographyProps={{ noWrap: true }}
@@ -180,7 +191,7 @@ const DeviceRow = ({ data, index, style, disableActions }) => {
               />
               {address || "Address not available"}
             </Typography>
-            <CardActions>
+            <CardActions sx={{display:"flex",justifyContent:"space-between"}}>
               <Tooltip title={t("sharedExtra")}>
                 <IconButton
                   color="secondary"
@@ -223,6 +234,13 @@ const DeviceRow = ({ data, index, style, disableActions }) => {
                   disabled={disableActions || deviceReadonly}
                 >
                   <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={"History"}>
+                <IconButton
+                  // onClick={() => navigate("/history")}
+                >
+                  <HistoryIcon/>
                 </IconButton>
               </Tooltip>
             </CardActions>
